@@ -17,6 +17,12 @@ root.resizable(0,0)
 
 Top = Frame(root, width=500, bd=1, relief=SOLID)
 Top.pack(side=TOP)
+MidFrame = Frame(root, width=500)
+MidFrame.pack(side=TOP)
+LeftForm = Frame(MidFrame, width=100)
+LeftForm.pack(side=LEFT)
+RightForm = Frame(MidFrame, width=100)
+RightForm.pack(side=RIGHT)
 
 if __name__=='__main__':
     root.mainloop()
