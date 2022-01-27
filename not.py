@@ -21,11 +21,11 @@ def Database():
     cursor = conn.cursor()
     cursor.execute(""" CREATE TABLE IF NOT EXISTS testy (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, title TEXT, content TEXT) """)
     cursor.execute("SELECT * FROM testy")
-    if cursor.fetchone() is None:
-        cursor.execute("INSERT INTO testy(title, content) VALUES ('title0', 'content0')")
-        cursor.execute("INSERT INTO testy(title, content) VALUES ('title1', 'content1')")
-        cursor.execute("INSERT INTO testy(title, content) VALUES ('title2', 'content2')")
-        conn.commit()
+    # if cursor.fetchone() is None:
+    #     cursor.execute("INSERT INTO testy(title, content) VALUES ('title0', 'content0')")
+    #     cursor.execute("INSERT INTO testy(title, content) VALUES ('title1', 'content1')")
+    #     cursor.execute("INSERT INTO testy(title, content) VALUES ('title2', 'content2')")
+    #     conn.commit()
 
     cursor.execute("SELECT * FROM testy ORDER BY content ASC")
     fetch = cursor.fetchall()
