@@ -1,11 +1,13 @@
+from curses import window
 from tkinter import *
 import sqlite3
 import tkinter.ttk as ttk
+import test
 
 root = Tk()
 root.title('Notek')
-width=1250
-height=700
+width=1920
+height=1080
 screen_width=root.winfo_screenwidth()
 screen_height=root.winfo_screenheight()
 x=(screen_width/2) - (width/2)
@@ -59,6 +61,10 @@ def Reset():
     cursor.close()
     conn.close()
 
+
+def Test():
+    print("")
+
 #==========================================================================================
 
 Top = Frame(root, width=500, bd=1, relief=SOLID)
@@ -72,7 +78,7 @@ RightForm.pack(side=RIGHT)
 
 #==========================================================================================
 
-lblTitle = Label(Top, width=1250, font=('arial', 18), text="Python SQLite Search App")
+lblTitle = Label(Top, width=1250, font=('arial', 18), text="Search App")
 lblTitle.pack(side=TOP, fill=X)
 lblSearch = Label(LeftForm, font=('arial', 15), text="Search here...")
 lblSearch.pack(side=TOP)
@@ -88,6 +94,8 @@ btnSearch = Button(LeftForm, text="Search", bg="#006dcc", command=Search)
 btnSearch.pack(side=LEFT)
 btnReset = Button(LeftForm, text="Reset", command=Reset)
 btnReset.pack(side=LEFT)
+btnTest= Button(LeftForm, text="Test", bg="#006dcc", command=Test)
+btnTest.pack(side=RIGHT)
 
 #==========================================================================================
 
@@ -98,8 +106,8 @@ scrollbary.config(command=tree.yview)
 scrollbary.pack(side=RIGHT, fill=Y)
 scrollbarx.config(command=tree.xview)
 scrollbarx.pack(side=BOTTOM, fill=X)
-tree.heading('MemberID', text="MemberID", anchor=W)
-tree.heading('Title', text="Title", anchor=W)
+tree.heading('MemberID', text="MemberID")
+tree.heading('Title', text="Title")
 tree.heading('Content', text="Content")
 tree.column('#0', stretch=NO, minwidth=0, width=0)
 tree.column('#1', stretch=NO, minwidth=0, width=0)
