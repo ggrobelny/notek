@@ -1,6 +1,10 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from tkinter import *
 import sqlite3
 import tkinter.ttk as ttk
+
 
 root = Tk()
 root.title('Notek')
@@ -13,6 +17,9 @@ y=(screen_height/2) - (height/2)
 root.geometry("%dx%d+%d+%d" % (width,height,x,y))
 root.resizable()
 SEARCH = StringVar()
+
+
+        
 
 #==========================================================================================
 
@@ -59,53 +66,76 @@ def Reset():
     cursor.close()
     conn.close()
 
+
+def Menubar(self):
+		self.menu = Menu(root, bd=2, background="#34596b", activebackground='#091b3a', activeforeground='#d6bf33')
+		self.master.config(menu=self.menu)
+		filemenu = Menu(self.menu, background="#a52a2a", activebackground='#091b3a', activeforeground='#d6bf33')
+		self.menu.add_cascade(label="File", menu=filemenu, font=("Ubuntu", 10, "bold"), background="#34596b", foreground="#d6bf33")
+		filemenu.add_command(label="New", command=self.NewFile, font=("Ubuntu", 10, "bold"), background="#34596b",
+							 foreground="#d6bf33", activebackground='#091b3a', activeforeground='#d6bf33')
+		filemenu.add_command(label="Open", command=self.opn,font=("Ubuntu", 10, "bold"), background="#34596b",
+							 foreground="#d6bf33", activebackground='#091b3a', activeforeground='#d6bf33')
+		filemenu.add_command(label="Save", command=self.save,font=("Ubuntu", 10, "bold"), background="#34596b",
+							 foreground="#d6bf33", activebackground='#091b3a', activeforeground='#d6bf33')
+		filemenu.add_command(label="Save As..", command=self.saveas,font=("Ubuntu", 10, "bold"), background="#34596b",
+							 foreground="#d6bf33", activebackground='#091b3a', activeforeground='#d6bf33')
+		filemenu.add_separator(background="#34596b")
+		filemenu.add_command(label="Exit", command=self.quit, font=("Ubuntu", 10, "bold"), background="#a52a2a",
+							 foreground="#d6bf33", activebackground='#091b3a', activeforeground='#d6bf33')
+		filemenu.add_separator(background="#34596b")
 #==========================================================================================
 
-Top = Frame(root, width=500, bd=1, relief=SOLID)
-Top.pack(side=TOP)
-MidFrame = Frame(root, width=500)
-MidFrame.pack(side=TOP)
-LeftForm = Frame(MidFrame, width=100)
-LeftForm.pack(side=LEFT)
-RightForm = Frame(MidFrame, width=500)
-RightForm.pack(side=RIGHT)
+# Top = Frame(root, width=500, bd=1, relief=SOLID)
+# Top.pack(side=TOP)
+# MidFrame = Frame(root, width=500)
+# MidFrame.pack(side=TOP)
+# LeftForm = Frame(MidFrame, width=100)
+# LeftForm.pack(side=LEFT)
+# RightForm = Frame(MidFrame, width=500)
+# RightForm.pack(side=RIGHT)
 
 #==========================================================================================
 
-lblTitle = Label(Top, width=1250, font=('arial', 18), text="Python SQLite Search App")
+lblTitle = Label(width=1250, font=('arial', 18), text="Python SQLite Search App")
 lblTitle.pack(side=TOP, fill=X)
-lblSearch = Label(LeftForm, font=('arial', 15), text="Search here...")
-lblSearch.pack(side=TOP)
+lblSearch = Label(font=('arial', 15), text="Search here...")
+lblSearch.pack(side=TOP, anchor=E)
 
 #==========================================================================================
 
-search = Entry(LeftForm, textvariable=SEARCH)
-search.pack(side=TOP, pady=10)
+search = Entry(textvariable=SEARCH)
+search.pack(side=TOP, anchor=E)
+search.config(bg='lightgreen')
 
 #==========================================================================================
 
-btnSearch = Button(LeftForm, text="Search", bg="#006dcc", command=Search)
-btnSearch.pack(side=LEFT)
-btnReset = Button(LeftForm, text="Reset", command=Reset)
-btnReset.pack(side=LEFT)
+btnSearch = Button(text="Search", bg="#006dcc", command=Search)
+btnSearch.pack(side=LEFT, anchor=N)
+btnSearch.place(x=75, y=50)
+btnReset = Button(text="Reset", command=Reset)
+btnReset.pack(side=LEFT, anchor=NW)
+btnReset.place(x=10, y=50)
 
 #==========================================================================================
 
-scrollbarx = Scrollbar(RightForm, orient=HORIZONTAL)
-scrollbary = Scrollbar(RightForm, orient=VERTICAL)
-tree = ttk.Treeview(RightForm, columns=("MemberID", "Title", "Content"), selectmode="extended", height=400, yscrollcommand=scrollbary.set, xscrollcommand=scrollbarx.set)
+scrollbarx = Scrollbar(orient=HORIZONTAL)
+scrollbary = Scrollbar(orient=VERTICAL)
+tree = ttk.Treeview(columns=("MemberID", "Content", "Title"), selectmode="extended", height=400, yscrollcommand=scrollbary.set, xscrollcommand=scrollbarx.set)
 scrollbary.config(command=tree.yview)
 scrollbary.pack(side=RIGHT, fill=Y)
 scrollbarx.config(command=tree.xview)
 scrollbarx.pack(side=BOTTOM, fill=X)
-tree.heading('MemberID', text="MemberID", anchor=W)
-tree.heading('Title', text="Title", anchor=W)
+tree.heading('MemberID', text="MemberID")
 tree.heading('Content', text="Content")
+tree.heading('Title', text="Title")
+
 tree.column('#0', stretch=NO, minwidth=0, width=0)
 tree.column('#1', stretch=NO, minwidth=0, width=0)
-tree.column('#2', stretch=NO, minwidth=0, width=380)
-tree.column('#3', stretch=NO, minwidth=0, width=700)
-tree.pack()
+tree.column('#2', stretch=NO, minwidth=0, width=480)
+tree.column('#3', stretch=NO, minwidth=0, width=150)
+tree.pack(anchor=E)
+
 
 #==========================================================================================
 
@@ -120,4 +150,6 @@ tree.pack()
 
 if __name__=='__main__':
     Database()
-    root.mainloop()
+
+
+root.mainloop()
