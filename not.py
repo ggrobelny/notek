@@ -1,21 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from distutils.log import error
 from tkinter import *
 import sqlite3
 import tkinter.ttk as ttk
+from unittest import result
 
 
 root = Tk()
 root.title('Notek')
-width=1250
-height=700
+width=1728
+height=972
 screen_width=root.winfo_screenwidth()
 screen_height=root.winfo_screenheight()
 x=(screen_width/2) - (width/2)
 y=(screen_height/2) - (height/2)
+error = Message(text="", width=160)
 root.geometry("%dx%d+%d+%d" % (width,height,x,y))
-root.resizable()
+root.resizable(0,0)
 SEARCH = StringVar()
 
 
@@ -51,6 +54,7 @@ def Search():
         fetch = cursor.fetchall()
         for data in fetch:
             tree.insert('', 'end', values=(data))
+            content.insert('', 'end', values=(data))
         cursor.close()
         conn.close()   
 
@@ -67,33 +71,64 @@ def Reset():
     conn.close()
 
 
-def Menubar(self):
-		self.menu = Menu(root, bd=2, background="#34596b", activebackground='#091b3a', activeforeground='#d6bf33')
-		self.master.config(menu=self.menu)
-		filemenu = Menu(self.menu, background="#a52a2a", activebackground='#091b3a', activeforeground='#d6bf33')
-		self.menu.add_cascade(label="File", menu=filemenu, font=("Ubuntu", 10, "bold"), background="#34596b", foreground="#d6bf33")
-		filemenu.add_command(label="New", command=self.NewFile, font=("Ubuntu", 10, "bold"), background="#34596b",
-							 foreground="#d6bf33", activebackground='#091b3a', activeforeground='#d6bf33')
-		filemenu.add_command(label="Open", command=self.opn,font=("Ubuntu", 10, "bold"), background="#34596b",
-							 foreground="#d6bf33", activebackground='#091b3a', activeforeground='#d6bf33')
-		filemenu.add_command(label="Save", command=self.save,font=("Ubuntu", 10, "bold"), background="#34596b",
-							 foreground="#d6bf33", activebackground='#091b3a', activeforeground='#d6bf33')
-		filemenu.add_command(label="Save As..", command=self.saveas,font=("Ubuntu", 10, "bold"), background="#34596b",
-							 foreground="#d6bf33", activebackground='#091b3a', activeforeground='#d6bf33')
-		filemenu.add_separator(background="#34596b")
-		filemenu.add_command(label="Exit", command=self.quit, font=("Ubuntu", 10, "bold"), background="#a52a2a",
-							 foreground="#d6bf33", activebackground='#091b3a', activeforeground='#d6bf33')
-		filemenu.add_separator(background="#34596b")
+def fetchLastOne():
+    conn = sqlite3.connect('testowe.db')
+    pobierz = conn.cursor()
+    pobierz.execute("SELECT content FROM testy ORDER BY id DESC LIMIT 1")
+    dane = pobierz.fetchone()
+    for dana in dane:
+        print(dana, [0])
+        content.delete("1.0",END)
+        content.insert(INSERT, dana)
+
+
+def addNewContent():
+    conn = sqlite3.connect('testowe.db')
+    cursor = conn.cursor()
+    newTitle = title.get()
+    newContent = content.get("1.0", END)
+
+    cursor.execute("SELECT COUNT(*) FROM testy WHERE title='"+ newTitle +"' ")
+    result = cursor.fetchone()
+
+    if int(result[0]) > 0:
+        error["text"] = "Error: Title already exists"
+        
+    else:
+        error["text"] = "Added New Information"
+        cursor.execute("INSERT INTO testy(title, content)VALUES(?,?)", (newTitle, newContent))   
+        conn.commit()
+        title.delete(0, END)
+        content.delete(1.0, END)
+
+#==========================================================================================
+# def Menubar(self):
+# 		self.menu = Menu(root, bd=2, background="#34596b", activebackground='#091b3a', activeforeground='#d6bf33')
+# 		self.master.config(menu=self.menu)
+# 		filemenu = Menu(self.menu, background="#a52a2a", activebackground='#091b3a', activeforeground='#d6bf33')
+# 		self.menu.add_cascade(label="File", menu=filemenu, font=("Ubuntu", 10, "bold"), background="#34596b", foreground="#d6bf33")
+# 		filemenu.add_command(label="New", command=self.NewFile, font=("Ubuntu", 10, "bold"), background="#34596b",
+# 							 foreground="#d6bf33", activebackground='#091b3a', activeforeground='#d6bf33')
+# 		filemenu.add_command(label="Open", command=self.opn,font=("Ubuntu", 10, "bold"), background="#34596b",
+# 							 foreground="#d6bf33", activebackground='#091b3a', activeforeground='#d6bf33')
+# 		filemenu.add_command(label="Save", command=self.save,font=("Ubuntu", 10, "bold"), background="#34596b",
+# 							 foreground="#d6bf33", activebackground='#091b3a', activeforeground='#d6bf33')
+# 		filemenu.add_command(label="Save As..", command=self.saveas,font=("Ubuntu", 10, "bold"), background="#34596b",
+# 							 foreground="#d6bf33", activebackground='#091b3a', activeforeground='#d6bf33')
+# 		filemenu.add_separator(background="#34596b")
+# 		filemenu.add_command(label="Exit", command=self.quit, font=("Ubuntu", 10, "bold"), background="#a52a2a",
+# 							 foreground="#d6bf33", activebackground='#091b3a', activeforeground='#d6bf33')
+# 		filemenu.add_separator(background="#34596b")
 #==========================================================================================
 
-# Top = Frame(root, width=500, bd=1, relief=SOLID)
-# Top.pack(side=TOP)
-# MidFrame = Frame(root, width=500)
-# MidFrame.pack(side=TOP)
-# LeftForm = Frame(MidFrame, width=100)
-# LeftForm.pack(side=LEFT)
-# RightForm = Frame(MidFrame, width=500)
-# RightForm.pack(side=RIGHT)
+Top = Frame(root, width=900, height=1, bd=1, relief=SOLID)
+Top.pack(side=TOP)
+MidFrame = Frame(root, width=500)
+MidFrame.pack(side=TOP)
+LeftForm = Frame(MidFrame, width=100)
+LeftForm.pack(side=LEFT)
+RightForm = Frame(MidFrame, width=500)
+RightForm.pack(side=RIGHT)
 
 #==========================================================================================
 
@@ -101,6 +136,9 @@ lblTitle = Label(width=1250, font=('arial', 18), text="Python SQLite Search App"
 lblTitle.pack(side=TOP, fill=X)
 lblSearch = Label(font=('arial', 15), text="Search here...")
 lblSearch.pack(side=TOP, anchor=E)
+title = Entry(text="")
+title.place(x=300, y=100)
+title.config(bg='cyan')
 
 #==========================================================================================
 
@@ -110,12 +148,22 @@ search.config(bg='lightgreen')
 
 #==========================================================================================
 
+content = Text(root)
+content.place(x=300, y=150, width=575, height=600)
+content.config(bg='cyan')
+
+#==========================================BUTTON AREA================================================
+
 btnSearch = Button(text="Search", bg="#006dcc", command=Search)
 btnSearch.pack(side=LEFT, anchor=N)
 btnSearch.place(x=75, y=50)
 btnReset = Button(text="Reset", command=Reset)
 btnReset.pack(side=LEFT, anchor=NW)
 btnReset.place(x=10, y=50)
+btnLast = Button(text="LastID", bg="lightgreen", command=fetchLastOne)
+btnLast.place(x=140, y=50)
+btnInsert = Button(text="Wsad", bg="lightgreen", command=addNewContent)
+btnInsert.place(x=30, y=800)
 
 #==========================================================================================
 
