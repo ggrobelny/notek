@@ -8,7 +8,44 @@ import tkinter.ttk as ttk
 from os import system, name
 
 
+def donothing():
+   filewin = Toplevel(root)
+   button = Button(filewin, text="Do nothing button")
+   button.pack()
+
 root = Tk()
+menubar= Menu(root)
+filemenu = Menu(menubar, tearoff=0)
+filemenu.add_command(label="New", command=donothing, font=("Ubuntu", 10, "bold"), background="#34596b", foreground="#d6bf33")
+filemenu.add_command(label="Open", command=donothing)
+filemenu.add_command(label="Save", command=donothing)
+filemenu.add_command(label="Save as...", command=donothing)
+filemenu.add_command(label="Close", command=donothing)
+
+filemenu.add_separator()
+
+filemenu.add_command(label="Exit", command=root.quit)
+menubar.add_cascade(label="File", menu=filemenu)
+editmenu = Menu(menubar, tearoff=0)
+editmenu.add_command(label="Undo", command=donothing)
+
+editmenu.add_separator()
+
+editmenu.add_command(label="Cut", command=donothing)
+editmenu.add_command(label="Copy", command=donothing)
+editmenu.add_command(label="Paste", command=donothing)
+editmenu.add_command(label="Delete", command=donothing)
+editmenu.add_command(label="Select All", command=donothing)
+
+menubar.add_cascade(label="Edit", menu=editmenu)
+helpmenu = Menu(menubar, tearoff=0)
+helpmenu.add_command(label="Help Index", command=donothing)
+helpmenu.add_command(label="About...", command=donothing)
+menubar.add_cascade(label="Help", menu=helpmenu)
+
+
+
+
 root.title('Notek')
 width=1728
 height=972
@@ -54,7 +91,9 @@ def Search():
         fetch = cursor.fetchall()
         for data in fetch:
             tree.insert('', 'end', values=(data))
-            content.insert('', 'end', values=(data))
+            content.delete(1.0, END)
+            content.insert(INSERT, data[2])
+            
         cursor.close()
         conn.close()   
 
@@ -116,6 +155,7 @@ def Clear():
 
 
 #==========================================================================================
+
 # def Menubar(self):
 # 		self.menu = Menu(root, bd=2, background="#34596b", activebackground='#091b3a', activeforeground='#d6bf33')
 # 		self.master.config(menu=self.menu)
@@ -133,6 +173,7 @@ def Clear():
 # 		filemenu.add_command(label="Exit", command=self.quit, font=("Ubuntu", 10, "bold"), background="#a52a2a",
 # 							 foreground="#d6bf33", activebackground='#091b3a', activeforeground='#d6bf33')
 # 		filemenu.add_separator(background="#34596b")
+
 #==========================================================================================
 
 Top = Frame(root, width=900, height=1, bd=1, relief=SOLID)
@@ -185,7 +226,7 @@ btnClear.place(x=100, y=800)
 
 scrollbarx = Scrollbar(orient=HORIZONTAL)
 scrollbary = Scrollbar(orient=VERTICAL)
-tree = ttk.Treeview(columns=("MemberID", "Content", "Title"), selectmode="extended", height=400, yscrollcommand=scrollbary.set, xscrollcommand=scrollbarx.set)
+tree = ttk.Treeview(columns=("MemberID", "Title", "Content"), selectmode="extended", height=400, yscrollcommand=scrollbary.set, xscrollcommand=scrollbarx.set)
 scrollbary.config(command=tree.yview)
 scrollbary.pack(side=RIGHT, fill=Y)
 scrollbarx.config(command=tree.xview)
@@ -196,8 +237,8 @@ tree.heading('Title', text="Title")
 
 tree.column('#0', stretch=NO, minwidth=0, width=0)
 tree.column('#1', stretch=NO, minwidth=0, width=0)
-tree.column('#2', stretch=NO, minwidth=0, width=480)
-tree.column('#3', stretch=NO, minwidth=0, width=150)
+tree.column('#2', stretch=NO, minwidth=0, width=150)
+tree.column('#3', stretch=NO, minwidth=0, width=0)
 tree.pack(anchor=E)
 
 
@@ -216,4 +257,5 @@ if __name__=='__main__':
     Database()
 
 
+root.config(menu=menubar)
 root.mainloop()
