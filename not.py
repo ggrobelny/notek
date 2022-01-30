@@ -5,7 +5,7 @@ from distutils.log import error
 from tkinter import *
 import sqlite3
 import tkinter.ttk as ttk
-from unittest import result
+from os import system, name
 
 
 root = Tk()
@@ -101,6 +101,20 @@ def addNewContent():
         title.delete(0, END)
         content.delete(1.0, END)
 
+
+def Clear():
+    # windows
+    if name=='nt':
+        _=system('cls')
+
+        # linux unix
+    else:
+        _=system('clear')
+        search.delete(0,END)
+        title.delete(0,END)
+        content.delete(1.0,END)
+
+
 #==========================================================================================
 # def Menubar(self):
 # 		self.menu = Menu(root, bd=2, background="#34596b", activebackground='#091b3a', activeforeground='#d6bf33')
@@ -164,6 +178,8 @@ btnLast = Button(text="LastID", bg="lightgreen", command=fetchLastOne)
 btnLast.place(x=140, y=50)
 btnInsert = Button(text="Wsad", bg="lightgreen", command=addNewContent)
 btnInsert.place(x=30, y=800)
+btnClear = Button(text="Clear", bg="lightgreen", command=Clear)
+btnClear.place(x=100, y=800)
 
 #==========================================================================================
 
