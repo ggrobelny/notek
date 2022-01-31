@@ -186,10 +186,12 @@ def Clear():
 
 
 f=tk.Frame(root)
-tv=ttk.Treeview(f,show='tree', selectmode=BROWSE, height=35)
+tv=ttk.Treeview(f,show='tree', selectmode=BROWSE, height=37)
 ybar=tk.Scrollbar(f,orient=tk.VERTICAL,
                   command=tv.yview)
-tv.configure(yscroll=ybar.set)
+xbar=tk.Scrollbar(f,orient=tk.HORIZONTAL,
+                  command=tv.xview)
+tv.configure(yscroll=ybar.set, xscroll=xbar.set)
 directory='/home/'
 tv.heading('#0',text='Dir：'+directory)
 path=os.path.abspath(directory)
@@ -203,6 +205,7 @@ def traverse_dir(parent,path):
             traverse_dir(id,full_path)
 traverse_dir(node,path)
 ybar.pack(side=tk.RIGHT,fill=tk.Y)
+xbar.pack(side=tk.BOTTOM, fill=tk.X)
 tv.pack()
 tv.place()
 f.pack()
