@@ -10,23 +10,54 @@ import os
 import tkinter as tk
 
 
+class main:
+	def __init__(self,master):
+		self.master = master
+		self.menubar()
+
+
 def donothing():
    filewin = Toplevel(root)
    button = Button(filewin, text="Do nothing button")
    button.pack()
 
+
+
+def about():
+
+
+		window = Tk()
+		window.geometry("600x375")
+		window.configure(bg="#838383")
+
+		window.title('text@editor:~$')
+		label_1 = Label(window, text="File  Edit  View  Search Terminal  Help",bg="black", fg="white", width="120", height="1", anchor="nw", cursor="circle")
+		label_2 = Label(window, text='text@editor:~$', bg="#838383", fg="#7FFF00", font="Ubuntu", width="84", height="1", anchor="nw", cursor="circle")
+		label_pad = Label(window, text=" ", bg="#838383", width="84", height="5", anchor="nw", cursor="arrow")
+		label_3 = Label(window,pady=(8), text='My name is \nGrzegorz Grobelny\nand i\'m Python \nDeveloper.', bg="#091b3a", fg="#7FFF00",
+						font="Ubuntu 20", width="20", height="4", justify="center", bd=3, relief="raised", cursor="plus")
+
+		label_1.pack()
+		label_2.pack()
+		label_pad.pack()
+		label_3.pack()
+		window.resizable(False, False)
+		window.mainloop()
+
+
+
 root = Tk()
 menubar= Menu(root)
 filemenu = Menu(menubar, tearoff=0)
 filemenu.add_command(label="New", command=donothing, font=("Ubuntu", 10, "bold"), background="#34596b", foreground="#d6bf33")
-filemenu.add_command(label="Open", command=donothing)
-filemenu.add_command(label="Save", command=donothing)
-filemenu.add_command(label="Save as...", command=donothing)
-filemenu.add_command(label="Close", command=donothing)
+filemenu.add_command(label="Open", command=donothing, font=("Ubuntu", 10, "bold"), background="#34596b", foreground="#d6bf33")
+filemenu.add_command(label="Save", command=donothing, font=("Ubuntu", 10, "bold"), background="#34596b", foreground="#d6bf33")
+filemenu.add_command(label="Save as...", command=donothing, font=("Ubuntu", 10, "bold"), background="#34596b", foreground="#d6bf33")
+filemenu.add_command(label="Close", command=donothing, font=("Ubuntu", 10, "bold"), background="#34596b", foreground="#d6bf33")
 
 filemenu.add_separator()
 
-filemenu.add_command(label="Exit", command=root.quit)
+filemenu.add_command(label="Exit", command=root.quit, font=("Ubuntu", 10, "bold"), background="#a17e41", foreground="#d6bf33")
 menubar.add_cascade(label="File", menu=filemenu)
 editmenu = Menu(menubar, tearoff=0)
 editmenu.add_command(label="Undo", command=donothing)
@@ -42,10 +73,8 @@ editmenu.add_command(label="Select All", command=donothing)
 menubar.add_cascade(label="Edit", menu=editmenu)
 helpmenu = Menu(menubar, tearoff=0)
 helpmenu.add_command(label="Help Index", command=donothing)
-helpmenu.add_command(label="About...", command=donothing)
+helpmenu.add_command(label="About...", command=about)
 menubar.add_cascade(label="Help", menu=helpmenu)
-
-
 
 
 root.title('Notek')
@@ -238,7 +267,7 @@ content.config(bg='cyan')
 btnSearch = Button(text="Search", bg="#006dcc", command=Search)
 btnSearch.pack(side=LEFT, anchor=N)
 btnSearch.place(x=300, y=50)
-btnReset = Button(text="Reset", command=Reset)
+btnReset = Button(text="Title", command=Reset)
 btnReset.pack(side=LEFT, anchor=NW)
 btnReset.place(x=375, y=50)
 btnLast = Button(text="LastID", bg="lightgreen", command=fetchLastOne)
