@@ -6,6 +6,8 @@ from tkinter import *
 import sqlite3
 import tkinter.ttk as ttk
 from os import system, name
+import os
+import tkinter as tk
 
 
 def donothing():
@@ -55,7 +57,7 @@ x=(screen_width/2) - (width/2)
 y=(screen_height/2) - (height/2)
 error = Message(text="", width=160)
 root.geometry("%dx%d+%d+%d" % (width,height,x,y))
-root.resizable(0,0)
+root.resizable()
 SEARCH = StringVar()
 
 
@@ -154,6 +156,30 @@ def Clear():
         content.delete(1.0,END)
 
 
+f=tk.Frame(root)
+tv=ttk.Treeview(f,show='tree', selectmode=BROWSE, height=35)
+ybar=tk.Scrollbar(f,orient=tk.VERTICAL,
+                  command=tv.yview)
+tv.configure(yscroll=ybar.set)
+directory='/home/'
+tv.heading('#0',text='Dir：'+directory)
+path=os.path.abspath(directory)
+node=tv.insert('','end',text=path,open=True)
+def traverse_dir(parent,path):
+    for d in os.listdir(path):
+        full_path=os.path.join(path,d)
+        isdir = os.path.isdir(full_path)
+        id=tv.insert(parent,'end',text=d,open=False)
+        if isdir:
+            traverse_dir(id,full_path)
+traverse_dir(node,path)
+ybar.pack(side=tk.RIGHT,fill=tk.Y)
+tv.pack()
+tv.place()
+f.pack()
+f.place(y=200, x=0)
+
+
 #==========================================================================================
 
 # def Menubar(self):
@@ -187,8 +213,8 @@ RightForm.pack(side=RIGHT)
 
 #==========================================================================================
 
-lblTitle = Label(width=1250, font=('arial', 18), text="Python SQLite Search App")
-lblTitle.pack(side=TOP, fill=X)
+# lblTitle = Label(width=1250, font=('arial', 18), text="Python SQLite Search App")
+# lblTitle.pack(side=TOP, fill=X)
 lblSearch = Label(font=('arial', 15), text="Search here...")
 lblSearch.pack(side=TOP, anchor=E)
 title = Entry(text="")
@@ -204,23 +230,23 @@ search.config(bg='lightgreen')
 #==========================================================================================
 
 content = Text(root)
-content.place(x=300, y=150, width=575, height=600)
+content.place(x=300, y=150, width=1255, height=750)
 content.config(bg='cyan')
 
 #==========================================BUTTON AREA================================================
 
 btnSearch = Button(text="Search", bg="#006dcc", command=Search)
 btnSearch.pack(side=LEFT, anchor=N)
-btnSearch.place(x=75, y=50)
+btnSearch.place(x=300, y=50)
 btnReset = Button(text="Reset", command=Reset)
 btnReset.pack(side=LEFT, anchor=NW)
-btnReset.place(x=10, y=50)
+btnReset.place(x=375, y=50)
 btnLast = Button(text="LastID", bg="lightgreen", command=fetchLastOne)
-btnLast.place(x=140, y=50)
+btnLast.place(x=450, y=50)
 btnInsert = Button(text="Wsad", bg="lightgreen", command=addNewContent)
-btnInsert.place(x=30, y=800)
+btnInsert.place(x=525, y=50)
 btnClear = Button(text="Clear", bg="lightgreen", command=Clear)
-btnClear.place(x=100, y=800)
+btnClear.place(x=600, y=50)
 
 #==========================================================================================
 
