@@ -9,6 +9,8 @@ from os import system, name
 import os
 import tkinter as tk
 
+from numpy import delete
+
 
 class main:
 	def __init__(self,master):
@@ -152,6 +154,18 @@ def fetchLastOne():
         content.insert(INSERT, dana)
 
 
+def Delete():
+    conn = sqlite3.connect('testowe.db')
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM testy WHERE title LIKE ? OR content LIKE ?", ('%'+str(SEARCH.get())+'%', '%'+str(SEARCH.get())+'%'))
+    # title.delete("1.0", END)
+    # content.delete("1.0",END)
+    
+    cursor.close()
+    conn.commit()
+    conn.close()
+    tree.delete("1.0",END)
+
 def addNewContent():
     conn = sqlite3.connect('testowe.db')
     cursor = conn.cursor()
@@ -193,7 +207,7 @@ xbar=tk.Scrollbar(f,orient=tk.HORIZONTAL,
                   command=tv.xview)
 tv.configure(yscroll=ybar.set, xscroll=xbar.set)
 directory='/home/'
-tv.heading('#0',text='Dir：'+directory)
+tv.heading('#0',text="Dir："+directory)
 path=os.path.abspath(directory)
 node=tv.insert('','end',text=path,open=True)
 def traverse_dir(parent,path):
@@ -279,6 +293,8 @@ btnInsert = Button(text="Wsad", bg="lightgreen", command=addNewContent)
 btnInsert.place(x=525, y=50)
 btnClear = Button(text="Clear", bg="lightgreen", command=Clear)
 btnClear.place(x=600, y=50)
+btnDel = Button(text="Kasuj", bg="yellow", command=Delete)
+btnDel.place(x=700, y=50)
 
 #==========================================================================================
 
